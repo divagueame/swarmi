@@ -1,0 +1,34 @@
+services:
+  # Create Certificates - One off service
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - certbot_data:/etc/letsencrypt
+  #     - certbot_lib:/var/lib/letsencrypt
+  #   command: certonly --standalone --non-interactive --agree-tos -m martin@swarm.chiki.tech -d swarm.chiki.tech
+  #   ports:
+  #     - "81:81"
+  #   restart: unless-stopped
+# volumes:
+#   certbot_data:
+#   certbot_lib:
+
+  # NO SSL
+  # web:
+  #   image: martinarceteixeira/swarmi-web
+  #   ports:
+  #     - "80:80"
+  #   deploy:
+  #     replicas: 1
+
+  # SSL
+  web:
+    image: martinarceteixeira/swarmi-web
+    volumes:
+      - /var/lib/docker/volumes/swarmi_certbot_data/_data:/etc/letsencrypt:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    deploy:
+      replicas: 1
